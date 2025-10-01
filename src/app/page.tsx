@@ -362,17 +362,27 @@ Mit freundlichen Grüßen,
                 onValueChange={(v) => setMode(v as Mode)}
                 className="w-full"
               >
-                <TabsList className=" w-full  mb-8 bg-zinc-800 border border-zinc-700">
+                <TabsList className=" w-full  gap-3 mb-8 bg-zinc-800 border border-zinc-700">
                   <TabsTrigger
-                    value="basic"
+                    value="Personalized"
                     className="data-[state=active]:bg-zinc-700 text-white"
                   >
-                    Basic Modus
+                    Personalized
                   </TabsTrigger>
+                  <TabsTrigger
+                    value="Standard"
+                    className="data-[state=active]:bg-zinc-700 text-white"
+                  >
+                    Standard
+                  </TabsTrigger>{" "}
                 </TabsList>
 
-                <TabsContent value="basic" className="space-y-8">
+                <TabsContent value="Personalized" className="space-y-8">
                   <div className="space-y-6">
+                    <Textarea
+                      className="border-zinc-700 text-white placeholder:text-white"
+                      placeholder="Enter Template"
+                    ></Textarea>
                     <div className="space-y-3">
                       <Label
                         htmlFor="excel-upload"
@@ -390,37 +400,70 @@ Mit freundlichen Grüßen,
                           className="h-14 text-base bg-zinc-800 border-zinc-700 text-white file:mr-4 file:mt-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
                         />
                       </div>
-                      <p className="text-sm text-zinc-500">
-                        Excel-Datei mit Spalten: "email" und "website"
-                      </p>
                     </div>
-
-                    {emailRecords.length > 0 && (
-                      <div className="p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm font-medium text-white">
-                            {emailRecords.length} E-Mails geladen
-                          </span>
-                          <Badge className="bg-green-600 text-white">
-                            Bereit zum Starten
-                          </Badge>
-                        </div>
-                        <div className="max-h-40 overflow-y-auto space-y-2">
-                          {emailRecords.map((record, idx) => (
-                            <div
-                              key={idx}
-                              className="flex items-center justify-between text-sm p-2 bg-zinc-900 rounded"
-                            >
-                              <span className="text-zinc-300 truncate flex-1">
-                                {record.email} - {record.website}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </div>
 
+                  {emailRecords.length > 0 ? (
+                    <Button
+                      onClick={handleStartBatchProcessing}
+                      className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+                          Generiere E-Mail...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="mr-3 h-5 w-5" />
+                          Verarbeitung starten
+                        </>
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleInitialSubmit}
+                      className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
+                      disabled={loading || !emailData.website}
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+                          Generiere E-Mail...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="mr-3 h-5 w-5" />
+                          E-Mail generieren
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </TabsContent>
+                <TabsContent value="Standard" className="space-y-8">
+                  <Textarea
+                    className="border-zinc-700 text-white placeholder:text-white"
+                    placeholder="Enter Template"
+                  ></Textarea>
+                  <div className="space-y-3">
+                    <Label
+                      htmlFor="excel-upload"
+                      className="flex items-center gap-2 text-base font-medium text-white"
+                    >
+                      <FileSpreadsheet className="h-4 w-4 text-green-400" />
+                      Excel-Datei hochladen
+                    </Label>
+                    <div className="flex items-center gap-4">
+                      <Input
+                        id="excel-upload"
+                        type="file"
+                        accept=".xlsx,.xls,.csv"
+                        onChange={handleFileUpload}
+                        className="h-14 text-base bg-zinc-800 border-zinc-700 text-white file:mr-4 file:mt-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                      />
+                    </div>
+                  </div>
                   {emailRecords.length > 0 ? (
                     <Button
                       onClick={handleStartBatchProcessing}
