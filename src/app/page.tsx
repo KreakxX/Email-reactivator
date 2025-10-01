@@ -54,6 +54,8 @@ export default function Home() {
     generatedContent: "",
   });
 
+  const [template, setTemplate] = useState<string>("");
+
   const [emailRecords, setEmailRecords] = useState<EmailRecord[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -100,6 +102,18 @@ export default function Home() {
   const generateEmailForCurrentRecord = async (record: EmailRecord) => {
     setLoading(true);
 
+    const webHookUrl =
+    const BodyMessage = { record, template };
+
+    await fetch(webHookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(BodyMessage),
+    });
+
     const generatedEmial = "";
 
     setEmailData((prev) => ({
@@ -107,26 +121,6 @@ export default function Home() {
       email: record.email,
       website: record.website,
       generatedContent: generatedEmial,
-    }));
-    setLoading(false);
-    setStep("generated");
-  };
-
-  const handleInitialSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (mode === "basic") {
-      if (!emailData.website) return;
-    } else {
-      if (!emailData.email || !emailData.website) return;
-    }
-
-    setLoading(true);
-    const generatedEmailBasic = "Henrik";
-
-    setEmailData((prev) => ({
-      ...prev,
-      generatedContent: generatedEmailBasic,
     }));
     setLoading(false);
     setStep("generated");
@@ -315,6 +309,9 @@ export default function Home() {
                 <TabsContent value="Personalized" className="space-y-8">
                   <div className="space-y-6">
                     <Textarea
+                      onChange={(e) => {
+                        setTemplate(e.target.value);
+                      }}
                       className="border-zinc-700 text-white placeholder:text-white"
                       placeholder="Enter Template"
                     ></Textarea>
@@ -338,46 +335,29 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {emailRecords.length > 0 ? (
-                    <Button
-                      onClick={handleStartBatchProcessing}
-                      className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="mr-3 h-5 w-5 animate-spin" />
-                          Generiere E-Mail...
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="mr-3 h-5 w-5" />
-                          Verarbeitung starten
-                        </>
-                      )}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleInitialSubmit}
-                      className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
-                      disabled={loading || !emailData.website}
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="mr-3 h-5 w-5 animate-spin" />
-                          Generiere E-Mail...
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="mr-3 h-5 w-5" />
-                          E-Mail generieren
-                        </>
-                      )}
-                    </Button>
-                  )}
+                  <Button
+                    onClick={handleStartBatchProcessing}
+                    className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+                        Generiere E-Mail...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="mr-3 h-5 w-5" />
+                        Verarbeitung starten
+                      </>
+                    )}
+                  </Button>
                 </TabsContent>
                 <TabsContent value="Standard" className="space-y-8">
                   <Textarea
+                    onChange={(e) => {
+                      setTemplate(e.target.value);
+                    }}
                     className="border-zinc-700 text-white placeholder:text-white"
                     placeholder="Enter Template"
                   ></Textarea>
@@ -399,43 +379,23 @@ export default function Home() {
                       />
                     </div>
                   </div>
-                  {emailRecords.length > 0 ? (
-                    <Button
-                      onClick={handleStartBatchProcessing}
-                      className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="mr-3 h-5 w-5 animate-spin" />
-                          Generiere E-Mail...
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="mr-3 h-5 w-5" />
-                          Verarbeitung starten
-                        </>
-                      )}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleInitialSubmit}
-                      className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
-                      disabled={loading || !emailData.website}
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="mr-3 h-5 w-5 animate-spin" />
-                          Generiere E-Mail...
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="mr-3 h-5 w-5" />
-                          E-Mail generieren
-                        </>
-                      )}
-                    </Button>
-                  )}
+                  <Button
+                    onClick={handleStartBatchProcessing}
+                    className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+                        Generiere E-Mail...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="mr-3 h-5 w-5" />
+                        Verarbeitung starten
+                      </>
+                    )}
+                  </Button>
                 </TabsContent>
               </Tabs>
             </CardContent>
