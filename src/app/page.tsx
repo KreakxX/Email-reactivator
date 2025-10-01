@@ -100,26 +100,13 @@ export default function Home() {
   const generateEmailForCurrentRecord = async (record: EmailRecord) => {
     setLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    const mockGeneratedEmail = `Betreff: Partnerschaftsmöglichkeit mit ${record.website}
-
-Hallo,
-
-ich hoffe, diese E-Mail erreicht Sie zur rechten Zeit. Ich habe ${record.website} erkundet und bin von Ihrem innovativen Ansatz und der Qualität Ihrer Arbeit beeindruckt.
-
-Ich würde gerne eine potenzielle Partnerschaftsmöglichkeit besprechen, die für beide Organisationen von Vorteil sein könnte. Unsere Dienstleistungen könnten das ergänzen, was Sie bereits außergewöhnlich gut machen.
-
-Wären Sie nächste Woche für ein kurzes Gespräch verfügbar, um dies weiter zu erkunden? Ich bin zuversichtlich, dass wir gemeinsam etwas Wertvolles schaffen könnten.
-
-Mit freundlichen Grüßen,
-[Ihr Name]`;
+    const generatedEmial = "";
 
     setEmailData((prev) => ({
       ...prev,
       email: record.email,
       website: record.website,
-      generatedContent: mockGeneratedEmail,
+      generatedContent: generatedEmial,
     }));
     setLoading(false);
     setStep("generated");
@@ -135,25 +122,11 @@ Mit freundlichen Grüßen,
     }
 
     setLoading(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    const mockGeneratedEmail = `Betreff: Partnerschaftsmöglichkeit mit ${emailData.website}
-
-Hallo,
-
-ich hoffe, diese E-Mail erreicht Sie zur rechten Zeit. Ich habe ${emailData.website} erkundet und bin von Ihrem innovativen Ansatz und der Qualität Ihrer Arbeit beeindruckt.
-
-Ich würde gerne eine potenzielle Partnerschaftsmöglichkeit besprechen, die für beide Organisationen von Vorteil sein könnte. Unsere Dienstleistungen könnten das ergänzen, was Sie bereits außergewöhnlich gut machen.
-
-Wären Sie nächste Woche für ein kurzes Gespräch verfügbar, um dies weiter zu erkunden? Ich bin zuversichtlich, dass wir gemeinsam etwas Wertvolles schaffen könnten.
-
-Mit freundlichen Grüßen,
-[Ihr Name]`;
+    const generatedEmailBasic = "Henrik";
 
     setEmailData((prev) => ({
       ...prev,
-      generatedContent: mockGeneratedEmail,
+      generatedContent: generatedEmailBasic,
     }));
     setLoading(false);
     setStep("generated");
@@ -166,49 +139,23 @@ Mit freundlichen Grüßen,
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailData.editInstructions) return;
-
     setLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // edit instructions von emailData
+    // webhook Call Edit with Old Content and new Prompt
 
-    const mockEditedEmail = `Betreff: Zusammenarbeitsmöglichkeit - ${
-      emailData.website
-    }
-
-Hallo,
-
-ich verfolge ${
-      emailData.website
-    } und bin wirklich beeindruckt von Ihren innovativen Lösungen und Ihrem Engagement für Exzellenz.
-
-${
-  emailData.editInstructions.includes("formal") ||
-  emailData.editInstructions.includes("formell")
-    ? "Ich möchte formell eine strategische Partnerschaft vorschlagen, die beiden Organisationen zugutekommen könnte."
-    : "Ich denke, es könnte eine großartige Gelegenheit für uns geben, zusammenzuarbeiten und etwas Erstaunliches zu schaffen."
-}
-
-Ihre Expertise in diesem Bereich passt perfekt zu unseren Zielen, und ich glaube, wir könnten durch die Kombination unserer Stärken bemerkenswerte Ergebnisse erzielen.
-
-Wären Sie daran interessiert, ein Gespräch zu vereinbaren, um diese Möglichkeit weiter zu erkunden?
-
-Ich freue mich auf Ihre Antwort.
-
-Mit freundlichen Grüßen,
-[Ihr Name]`;
-
+    const editedEmail = "Henri...";
     setEmailData((prev) => ({
       ...prev,
-      generatedContent: mockEditedEmail,
+      generatedContent: editedEmail,
     }));
+
     setLoading(false);
     setStep("generated");
   };
 
   const handleSend = async () => {
     setLoading(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     if (emailRecords.length > 0) {
       setEmailRecords((prev) =>
@@ -234,7 +181,6 @@ Mit freundlichen Grüßen,
         return;
       } else {
         setLoading(false);
-        alert(`Alle ${emailRecords.length} E-Mails erfolgreich versendet!`);
 
         setEmailData({
           email: "",
@@ -250,18 +196,7 @@ Mit freundlichen Grüßen,
     }
 
     setLoading(false);
-    alert("E-Mail erfolgreich versendet!");
 
-    setEmailData({
-      email: "",
-      website: "",
-      generatedContent: "",
-      editInstructions: "",
-    });
-    setStep("input");
-  };
-
-  const resetForm = () => {
     setEmailData({
       email: "",
       website: "",
@@ -561,15 +496,6 @@ Mit freundlichen Grüßen,
                       E-Mail bearbeiten
                     </Button>
                   </div>
-                  {emailRecords.length === 0 && (
-                    <Button
-                      onClick={resetForm}
-                      variant="ghost"
-                      className="w-full h-12 text-base hover:bg-zinc-800 text-zinc-400 hover:text-white"
-                    >
-                      Neu starten
-                    </Button>
-                  )}
                 </div>
               </CardContent>
             </Card>
