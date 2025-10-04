@@ -24,6 +24,10 @@ import {
   Sparkles,
   ArrowRight,
   FileSpreadsheet,
+  Building2,
+  Clock,
+  User2,
+  DollarSign,
 } from "lucide-react";
 import * as XLSX from "xlsx";
 
@@ -103,6 +107,7 @@ export default function Home() {
     setLoading(true);
 
     const webHookUrl =
+      "https://youngdigitalist.app.n8n.cloud/webhook-test/209faad2-8a40-4123-899c-2b851d526a4e";
     const BodyMessage = { record, template };
 
     await fetch(webHookUrl, {
@@ -114,13 +119,13 @@ export default function Home() {
       body: JSON.stringify(BodyMessage),
     });
 
-    const generatedEmial = "";
+    const generatedEmail = "";
 
     setEmailData((prev) => ({
       ...prev,
       email: record.email,
       website: record.website,
-      generatedContent: generatedEmial,
+      generatedContent: generatedEmail,
     }));
     setLoading(false);
     setStep("generated");
@@ -201,15 +206,16 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <main
+      className="min-h-screen bg-slate-950 scrollbar-hide "
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-purple-700/10 z-0" />
+      <div className="relative container mx-auto   w-full   px-4 py-12  z-10">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50 backdrop-blur-sm">
-              <Sparkles className="h-8 w-8 text-white" />
-            </div>
             <h1 className="text-4xl font-bold text-white text-balance">
-              AI Lead Reaktivator
+              Lead Reactivator
             </h1>
           </div>
           <p className="text-zinc-400 text-xl leading-relaxed max-w-2xl mx-auto">
@@ -240,49 +246,17 @@ export default function Home() {
           </div>
         )}
 
-        <div className="flex items-center justify-center gap-6 mb-12">
-          <div className="flex items-center gap-2">
-            <Badge
-              variant={step === "input" ? "default" : "secondary"}
-              className="gap-2 px-4 py-2 text-sm font-medium bg-zinc-800 text-zinc-200 border-zinc-700"
-            >
-              <Mail className="h-4 w-4" />
-              Eingabe
-            </Badge>
-          </div>
-          <ArrowRight className="h-4 w-4 text-zinc-500" />
-          <div className="flex items-center gap-2">
-            <Badge
-              variant={step === "generated" ? "default" : "secondary"}
-              className="gap-2 px-4 py-2 text-sm font-medium bg-zinc-800 text-zinc-200 border-zinc-700"
-            >
-              <Sparkles className="h-4 w-4" />
-              Generiert
-            </Badge>
-          </div>
-          <ArrowRight className="h-4 w-4 text-zinc-500" />
-          <div className="flex items-center gap-2">
-            <Badge
-              variant={step === "editing" ? "default" : "secondary"}
-              className="gap-2 px-4 py-2 text-sm font-medium bg-zinc-800 text-zinc-200 border-zinc-700"
-            >
-              <Edit3 className="h-4 w-4" />
-              Bearbeiten
-            </Badge>
-          </div>
-        </div>
-
         {step === "input" && (
-          <Card className="bg-zinc-900 border-zinc-700/50 shadow-2xl">
+          <Card className="bg-transparent border-zinc-700/40 shadow-2xl">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl text-white">
                 <div className="p-2 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                  <Mail className="h-6 w-6 text-white" />
+                  <Mail className="h-6 w-6 text-orange-500" />
                 </div>
                 E-Mail Generierung
               </CardTitle>
               <CardDescription className="text-base leading-relaxed text-zinc-400">
-                Wähle zwischen Basic- und Advanced-Modus
+                Wähle entweder Personalisierte oder Standard Email
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0">
@@ -291,19 +265,19 @@ export default function Home() {
                 onValueChange={(v) => setMode(v as Mode)}
                 className="w-full"
               >
-                <TabsList className=" w-full  gap-3 mb-8 bg-zinc-800 border border-zinc-700">
+                <TabsList className=" w-full  gap-3 mb-8 bg-zinc-800/40 border border-zinc-700">
                   <TabsTrigger
                     value="Personalized"
-                    className="data-[state=active]:bg-zinc-700 text-white"
+                    className="data-[state=active]:bg-zinc-700/40 text-white"
                   >
                     Personalized
                   </TabsTrigger>
                   <TabsTrigger
                     value="Standard"
-                    className="data-[state=active]:bg-zinc-700 text-white"
+                    className="data-[state=active]:bg-zinc-700/40 text-white"
                   >
                     Standard
-                  </TabsTrigger>{" "}
+                  </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="Personalized" className="space-y-8">
@@ -320,7 +294,7 @@ export default function Home() {
                         htmlFor="excel-upload"
                         className="flex items-center gap-2 text-base font-medium text-white"
                       >
-                        <FileSpreadsheet className="h-4 w-4 text-green-400" />
+                        <FileSpreadsheet className="h-4 w-4 text-orange-400" />
                         Excel-Datei hochladen
                       </Label>
                       <div className="flex items-center gap-4">
@@ -329,7 +303,7 @@ export default function Home() {
                           type="file"
                           accept=".xlsx,.xls,.csv"
                           onChange={handleFileUpload}
-                          className="h-14 text-base bg-zinc-800 border-zinc-700 text-white file:mr-4 file:mt-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                          className="h-14 text-base bg-zinc-800/30 border-zinc-700 text-white file:mr-4 file:mt-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-zinc-600/30 file:text-white hover:file:bg-zinc-600/30"
                         />
                       </div>
                     </div>
@@ -337,7 +311,7 @@ export default function Home() {
 
                   <Button
                     onClick={handleStartBatchProcessing}
-                    className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
+                    className="w-full h-14 text-lg font-medium bg-zinc-600/20 hover:bg-zinc-700/20  text-white border-0"
                     disabled={loading}
                   >
                     {loading ? (
@@ -346,10 +320,7 @@ export default function Home() {
                         Generiere E-Mail...
                       </>
                     ) : (
-                      <>
-                        <Sparkles className="mr-3 h-5 w-5" />
-                        Verarbeitung starten
-                      </>
+                      <>Verarbeitung starten</>
                     )}
                   </Button>
                 </TabsContent>
@@ -358,15 +329,15 @@ export default function Home() {
                     onChange={(e) => {
                       setTemplate(e.target.value);
                     }}
-                    className="border-zinc-700 text-white placeholder:text-white"
-                    placeholder="Enter Template"
+                    className="border-zinc-700 text-white placeholder:text-white "
+                    placeholder="Enter Email"
                   ></Textarea>
                   <div className="space-y-3">
                     <Label
                       htmlFor="excel-upload"
                       className="flex items-center gap-2 text-base font-medium text-white"
                     >
-                      <FileSpreadsheet className="h-4 w-4 text-green-400" />
+                      <FileSpreadsheet className="h-4 w-4 text-orange-400" />
                       Excel-Datei hochladen
                     </Label>
                     <div className="flex items-center gap-4">
@@ -375,13 +346,13 @@ export default function Home() {
                         type="file"
                         accept=".xlsx,.xls,.csv"
                         onChange={handleFileUpload}
-                        className="h-14 text-base bg-zinc-800 border-zinc-700 text-white file:mr-4 file:mt-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                        className="h-14 text-base bg-zinc-800/30 border-zinc-700 text-white file:mr-4 file:mt-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-zinc-600/30 file:text-white hover:file:bg-zinc-600/30"
                       />
                     </div>
                   </div>
                   <Button
                     onClick={handleStartBatchProcessing}
-                    className="w-full h-14 text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white border-0"
+                    className="w-full h-14 text-lg font-medium bg-zinc-600/20 hover:bg-zinc-700/20 text-white border-0"
                     disabled={loading}
                   >
                     {loading ? (
@@ -390,10 +361,7 @@ export default function Home() {
                         Generiere E-Mail...
                       </>
                     ) : (
-                      <>
-                        <Sparkles className="mr-3 h-5 w-5" />
-                        Verarbeitung starten
-                      </>
+                      <>Verarbeitung starten</>
                     )}
                   </Button>
                 </TabsContent>
@@ -531,6 +499,62 @@ export default function Home() {
             </CardContent>
           </Card>
         )}
+        <div className="flex col mt-10 gap-5">
+          <Card className="bg-slate-900/60 border-slate-800 relative z-10 h-[90%]">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="h-12 w-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                  <Clock className="h-6 w-6 text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-2">
+                    Zeitersparnis
+                  </h3>
+                  <p className="text-sm text-slate-300">
+                    Lassen sie die alle Emails automatisch und direkt versenden,
+                    ohne sie selber zu schreiben
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-slate-900/60 border-slate-800 relative z-10 h-[90%]">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="h-12 w-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                  <User2 className="h-6 w-6 text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-2">
+                    Personalisiert an die Zielgruppe
+                  </h3>
+                  <p className="text-sm text-slate-300">
+                    Unsere Workflows recherchieren automatisch Informationen
+                    über die Zielgruppe, um eine Perfekte Email zu schreiben
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-slate-900/60 border-slate-800 relative z-10 h-[90%]">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="h-12 w-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                  <DollarSign className="h-6 w-6 text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-2">
+                    Preis / Leistung
+                  </h3>
+                  <p className="text-sm text-slate-300">
+                    Sie sparen sich mehrere Stunden die Woche für einen fairen
+                    Preis
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </main>
   );
